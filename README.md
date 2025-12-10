@@ -1,13 +1,8 @@
-# `Catalogo` di documentazione sul RUP, DEC e Codice dei Contratti
-Catalogo al link [https://uo-transizionedigitalecomunepalermo.github.io/documentazione-rup/](https://uo-transizionedigitalecomunepalermo.github.io/documentazione-rup)
+# `Catalogo` delle UO del comune di Palermo con fatturazione elettronica
+Catalogo al link [https://uo-transizionedigitalecomunepalermo.github.io/ipa-uo-fatturazione/](https://uo-transizionedigitalecomunepalermo.github.io/ipa-uo-fatturazione)
 
-### Riferimenti per la norma
-Codice dei Contratti [Decreto Legislativo 36/2023](https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2023;036#)
-
-### Riferimenti per le fonti
-- Articoli e Pubblicazioni,
-- Giurisprudenza e norme,
-- Note degli uffici.
+### Riferimenti 
+[Portale IPA del comune di Palermo](https://www.indicepa.gov.it/ipa-portale/consultazione/domicilio-digitale/ricerca-area-organizzativa-omogenea/scheda-area-organizzativa-omogenea/AB7F7A3/elenco-unita-organizzative/AB7F7A3/aoo)
 
 ### Strumenti principali usati per realizzare la visualizzazione del `catalogo`:
 - [Simile Exhibit](http://www.simile-widgets.org/exhibit3/), per realizzare l'interfaccia di navigazione del catalogo;
