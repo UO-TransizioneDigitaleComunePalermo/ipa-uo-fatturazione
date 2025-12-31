@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cruscotto Ambiente Urbano – Palermo (RAU 2025)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f5f5;
+      color: #222;
+    }
+    header {
+      background: #004b8d;
+      color: #fff;
+      padding: 1.5rem 2rem;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.6rem;
+    }
+    header p {
+      margin: 0.3rem 0 0;
+      font-size: 0.9rem;
+    }
+    main {
+      padding: 1.5rem 2rem 2.5rem;
+    }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .kpi-card {
+      background: #fff;
+      border-radius: 6px;
+      padding: 0.9rem 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    .kpi-title {
+      font-size: 0.85rem;
+      color: #555;
+      margin-bottom: 0.3rem;
+    }
+    .kpi-value {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.15rem;
+    }
+    .kpi-note {
+      font-size: 0.75rem;
+      color: #777;
+    }
+    section {
+      background: #fff;
+      border-radius: 6px;
+      padding: 1.2rem 1.4rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    section h2 {
+      margin-top: 0;
+      font-size: 1.1rem;
+      border-left: 4px solid #004b8d;
+      padding-left: 0.5rem;
+    }
+    .section-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(260px, 1.5fr);
+      gap: 1.2rem;
+    }
+    @media (max-width: 900px) {
+      .section-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    canvas {
+      width: 100% !important;
+      height: 260px !important;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 0.35rem 0.4rem;
+      text-align: left;
+    }
+    th {
+      background: #f1f1f1;
+    }
+    .tag {
+      display: inline-block;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      margin-right: 0.25rem;
+      background: #e6f2ff;
+      color: #004b8d;
+    }
+    .footer-note {
+      font-size: 0.75rem;
+      color: #777;
+      margin-top: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Cruscotto Ambiente Urbano – Palermo</h1>
+  <p>Estratto indicatori RAU 2025 (Palermo) – Popolazione, Mobilità, Clima, Aria, Rifiuti, Suolo, Verde, Balneazione. [file:1]</p>
+</header>
+
+<main>
+  <!-- KPI sintetici -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-title">Popolazione residente (2024)</div>
+      <div class="kpi-value">625.956 ab.</div>
+      <div class="kpi-note">In calo da 632.499 (2022) e 630.427 (2023). [file:1]</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-title">Tasso motorizzazione auto (2023)</div>
+      <div class="kpi-value">648 / 1.000 ab.</div>
+      <div class="kpi-note">Sopra media Italia (646). [file:1]</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-title">Incidenti stradali totali (2024)</div>
+      <div class="kpi-value">1.987</div>
+      <div class="kpi-note">+10,5% vs 2022 (1.797). [file:1]</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-title">Ondate di calore livello 3 (2024)</div>
+      <div class="kpi-value">18 eventi</div>
+      <div class="kpi-note">Unica città siciliana con livello 3 nel 2024. [file:1]</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-title">NO₂ – PA Di Blasi (2024)</div>
+      <div class="kpi-value">49 µg/m³</div>
+      <div class="kpi-note">Sopra limite annuo 40 µg/m³. [file:1]</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-title">PM₁₀ – PA Boccadifalco (2024)</div>
+      <div class="kpi-value">27 µg/m³</div>
+      <div class="kpi-note">47 superamenti giornalieri (limite 35). [file:1]</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-title">Raccolta differenziata (2024)</div>
+      <div class="kpi-value">17,31 %</div>
+      <div class="kpi-note">Tra i valori più bassi in Italia. [file:1]</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-title">Verde urbano (2023)</div>
+      <div class="kpi-value">12,1 m²/ab</div>
+      <div class="kpi-note">Di cui 11,1 m²/ab accessibili. [file:1]</div>
+    </div>
+  </div>
+
+  <!-- Sezione 1: Popolazione -->
+  <section id="popolazione">
+    <h2>Popolazione residente</h2>
+    <div class="section-grid">
+      <div>
+        <p>
+          Palermo è il comune più popoloso della Sicilia (5º in Italia), ma mostra un calo strutturale di popolazione tra 2022 e 2024. [file:1]
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Anno</th>
+              <th>Popolazione</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>2022</td><td>632.499</td></tr>
+            <tr><td>2023</td><td>630.427</td></tr>
+            <tr><td>2024</td><td>625.956</td></tr>
+          </tbody>
+        </table>
+        <p class="footer-note">
+          Fonte: Istat, censimento demografico (RAU 2025). [file:1]
+        </p>
+      </div>
+      <div>
+        <canvas id="chartPopolazione"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sezione 2: Mobilità e incidentalità -->
+  <section id="mobilita">
+    <h2>Mobilità e incidentalità</h2>
+    <div class="section-grid">
+      <div>
+        <p>
+          La motorizzazione è elevata e l’offerta di TPL non ha ancora recuperato i livelli pre‑pandemia; gli incidenti stradali sono in crescita. [file:1]
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Indicatore</th>
+              <th>2018</th>
+              <th>2019</th>
+              <th>2020</th>
+              <th>2021</th>
+              <th>2022</th>
+              <th>2023</th>
+              <th>2024</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Posti‑km TPL / ab.</td>
+              <td>2056</td>
+              <td>1823</td>
+              <td>1590</td>
+              <td>1571</td>
+              <td>1557</td>
+              <td>1633</td>
+              <td>–</td>
+            </tr>
+            <tr>
+              <td>Incidenti totali</td>
+              <td>–</td>
+              <td>–</td>
+              <td>–</td>
+              <td>–</td>
+              <td>1.797</td>
+              <td>1.887</td>
+              <td>1.987</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="footer-note">
+          Fonti: Istat ambiente urbano, Istat/ACI incidenti stradali. [file:1]
+        </p>
+      </div>
+      <div>
+        <canvas id="chartIncidenti"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sezione 3: Ondate di calore -->
+  <section id="ondate">
+    <h2>Ondate di calore</h2>
+    <div class="section-grid">
+      <div>
+        <p>
+          Nel 2024 Palermo ha registrato 18 ondate di calore di livello 3, risultando la città con maggiore esposizione a stress termico in Sicilia. [file:1]
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Livello</th>
+              <th>Numero eventi (2024)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Livello 3</td><td>18</td></tr>
+            <tr><td>Livello 2</td><td>15</td></tr>
+            <tr><td>Livello 1</td><td>29</td></tr>
+          </tbody>
+        </table>
+        <p class="footer-note">
+          Fonte: DEP Lazio, ISPRA, ISTAT – sistema HHWW. [file:1]
+        </p>
+      </div>
+      <div>
+        <canvas id="chartOndate"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sezione 4: Qualità dell’aria (NO2) -->
+  <section id="aria-no2">
+    <h2>Qualità dell’aria – NO₂</h2>
+    <div class="section-grid">
+      <div>
+        <p>
+          Le stazioni di traffico urbano (PA‑Di Blasi, PA‑Castelnuovo) mostrano superamenti o valori prossimi al limite annuo di NO₂. [file:1]
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Stazione</th>
+              <th>2019</th>
+              <th>2020</th>
+              <th>2021</th>
+              <th>2022</th>
+              <th>2023</th>
+              <th>2024</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>PA‑Di Blasi</td>
+              <td>49</td>
+              <td>46</td>
+              <td>50</td>
+              <td>53</td>
+              <td>52</td>
+              <td>49</td>
+            </tr>
+            <tr>
+              <td>PA‑Castelnuovo</td>
+              <td>46</td>
+              <td>31</td>
+              <td>35</td>
+              <td>41</td>
+              <td>37</td>
+              <td>35</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="footer-note">
+          Fonte: ARPA Sicilia – rete qualità dell’aria. [file:1]
+        </p>
+      </div>
+      <div>
+        <canvas id="chartNO2"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sezione 5: Rifiuti e raccolta differenziata -->
+  <section id="rifiuti">
+    <h2>Rifiuti urbani e raccolta differenziata</h2>
+    <div class="section-grid">
+      <div>
+        <p>
+          Palermo produce oltre 360 mila tonnellate di rifiuti urbani l’anno, con una raccolta differenziata ancora sotto il 20%. [file:1]
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Anno</th>
+              <th>Rifiuti prodotti (t)</th>
+              <th>RD (%)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>2023</td><td>356.586</td><td>16,83</td></tr>
+            <tr><td>2024</td><td>361.079</td><td>17,31</td></tr>
+          </tbody>
+        </table>
+        <p class="footer-note">
+          Fonte: Regione Siciliana – Servizio S.04. [file:1]
+        </p>
+      </div>
+      <div>
+        <canvas id="chartRifiuti"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sezione 6: Suolo e verde urbano -->
+  <section id="suolo-verde">
+    <h2>Consumo di suolo e verde urbano</h2>
+    <div class="section-grid">
+      <div>
+        <p>
+          Palermo presenta un consumo di suolo molto elevato (circa 40% del territorio comunale) e una dotazione di verde pro capite sotto la media nazionale. [file:1]
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Indicatore</th>
+              <th>2023</th>
+              <th>2024</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Suolo consumato (ha)</td>
+              <td>6.372</td>
+              <td>6.395</td>
+            </tr>
+            <tr>
+              <td>Suolo consumato (%)</td>
+              <td>39,91</td>
+              <td>40,02</td>
+            </tr>
+          </tbody>
+        </table>
+        <table>
+          <thead>
+            <tr>
+              <th>Verde urbano</th>
+              <th>2019</th>
+              <th>2020</th>
+              <th>2021</th>
+              <th>2022</th>
+              <th>2023</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>m²/ab</td>
+              <td>11,7</td>
+              <td>11,9</td>
+              <td>12,0</td>
+              <td>12,0</td>
+              <td>12,1</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="footer-note">
+          Fonti: ISPRA consumo di suolo, Istat verde urbano. [file:1]
+        </p>
+      </div>
+      <div>
+        <canvas id="chartVerde"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sezione 7: Balneazione -->
+  <section id="balneazione">
+    <h2>Balneazione e qualità delle acque</h2>
+    <div class="section-grid">
+      <div>
+        <p>
+          Il 63,5% del litorale comunale di Palermo è classificato come costa balneabile, in un contesto regionale con oltre l’80% di acque eccellenti. [file:1]
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Indicatore</th>
+              <th>Valore</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Costa balneabile Palermo</td><td>63,5 %</td></tr>
+            <tr><td>Acque eccellenti Sicilia (2024)</td><td>81,8 %</td></tr>
+            <tr><td>Acque buone Sicilia</td><td>9,8 %</td></tr>
+            <tr><td>Acque sufficienti Sicilia</td><td>4,0 %</td></tr>
+          </tbody>
+        </table>
+        <p class="footer-note">
+          Fonte: ARPA Sicilia – Rapporto balneazione 2013–2024. [file:1]
+        </p>
+      </div>
+      <div>
+        <canvas id="chartBalneazione"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <p class="footer-note">
+    Nota: valori e serie sono estratti/sintetizzati dal Rapporto Ambiente Urbano RAU 2025 – Palermo, Catania, Messina. [file:1]
+  </p>
+</main>
+
+<script>
+  // Popolazione
+  new Chart(document.getElementById('chartPopolazione'), {
+    type: 'line',
+    data: {
+      labels: ['2022', '2023', '2024'],
+      datasets: [{
+        label: 'Popolazione residente',
+        data: [632499, 630427, 625956],
+        borderColor: '#004b8d',
+        backgroundColor: 'rgba(0,75,141,0.1)',
+        tension: 0.2,
+        fill: true,
+        pointRadius: 3
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { enabled: true }
+      },
+      scales: {
+        y: { beginAtZero: false }
+      }
+    }
+  });
+
+  // Incidenti stradali
+  new Chart(document.getElementById('chartIncidenti'), {
+    type: 'bar',
+    data: {
+      labels: ['2022', '2023', '2024'],
+      datasets: [{
+        label: 'Incidenti totali',
+        data: [1797, 1887, 1987],
+        backgroundColor: '#e67e22'
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+
+  // Ondate di calore
+  new Chart(document.getElementById('chartOndate'), {
+    type: 'bar',
+    data: {
+      labels: ['Livello 1', 'Livello 2', 'Livello 3'],
+      datasets: [{
+        label: 'Numero eventi (2024)',
+        data: [29, 15, 18],
+        backgroundColor: ['#3498db', '#f1c40f', '#e74c3c']
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true } }
+    }
+  });
+
+  // NO2 – PA Di Blasi
+  new Chart(document.getElementById('chartNO2'), {
+    type: 'line',
+    data: {
+      labels: ['2019', '2020', '2021', '2022', '2023', '2024'],
+      datasets: [{
+        label: 'PA‑Di Blasi',
+        data: [49, 46, 50, 53, 52, 49],
+        borderColor: '#c0392b',
+        backgroundColor: 'rgba(192,57,43,0.1)',
+        tension: 0.2,
+        fill: true
+      }, {
+        label: 'Limite annuo (40 µg/m³)',
+        data: [40, 40, 40, 40, 40, 40],
+        borderColor: '#7f8c8d',
+        borderDash: [4, 4],
+        pointRadius: 0,
+        fill: false
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: true } },
+      scales: { y: { beginAtZero: true } }
+    }
+  });
+
+  // Rifiuti e RD
+  new Chart(document.getElementById('chartRifiuti'), {
+    type: 'bar',
+    data: {
+      labels: ['2023', '2024'],
+      datasets: [{
+        label: 'Rifiuti prodotti (t)',
+        data: [356586, 361079],
+        backgroundColor: '#7f8c8d',
+        yAxisID: 'y'
+      }, {
+        label: 'Raccolta differenziata (%)',
+        data: [16.83, 17.31],
+        type: 'line',
+        borderColor: '#27ae60',
+        backgroundColor: 'rgba(39,174,96,0.15)',
+        yAxisID: 'y1',
+        tension: 0.2,
+        fill: true
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: true } },
+      scales: {
+        y: {
+          type: 'linear',
+          position: 'left',
+          beginAtZero: false
+        },
+        y1: {
+          type: 'linear',
+          position: 'right',
+          beginAtZero: true,
+          grid: { drawOnChartArea: false }
+        }
+      }
+    }
+  });
+
+  // Verde urbano
+  new Chart(document.getElementById('chartVerde'), {
+    type: 'line',
+    data: {
+      labels: ['2019', '2020', '2021', '2022', '2023'],
+      datasets: [{
+        label: 'Verde urbano Palermo (m²/ab)',
+        data: [11.7, 11.9, 12.0, 12.0, 12.1],
+        borderColor: '#16a085',
+        backgroundColor: 'rgba(22,160,133,0.1)',
+        tension: 0.2,
+        fill: true
+      }, {
+        label: 'Standard minimo (9 m²/ab)',
+        data: [9, 9, 9, 9, 9],
+        borderColor: '#7f8c8d',
+        borderDash: [4, 4],
+        pointRadius: 0,
+        fill: false
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: true } },
+      scales: { y: { beginAtZero: true } }
+    }
+  });
+
+  // Balneazione
+  new Chart(document.getElementById('chartBalneazione'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Costa balneabile Palermo', 'Costa non balneabile Palermo'],
+      datasets: [{
+        data: [63.5, 36.5],
+        backgroundColor: ['#2980b9', '#bdc3c7']
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: true } }
+    }
+  });
+</script>
+</body>
+</html>
